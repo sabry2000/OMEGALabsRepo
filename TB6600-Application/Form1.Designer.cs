@@ -34,14 +34,14 @@ namespace TB6600_Application
             this.ConnectButton = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.CalibrateButton = new System.Windows.Forms.Button();
             this.DownButton = new System.Windows.Forms.Button();
             this.UpButton = new System.Windows.Forms.Button();
             this.panel3 = new System.Windows.Forms.Panel();
-            this.label2 = new System.Windows.Forms.Label();
-            this.SetPositionButton = new System.Windows.Forms.Button();
             this.SetPositionTextBox = new System.Windows.Forms.TextBox();
+            this.SetPositionButton = new System.Windows.Forms.Button();
+            this.label2 = new System.Windows.Forms.Label();
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
-            this.CalibrateButton = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
@@ -54,6 +54,7 @@ namespace TB6600_Application
             this.COMPortComboBox.Name = "COMPortComboBox";
             this.COMPortComboBox.Size = new System.Drawing.Size(121, 24);
             this.COMPortComboBox.TabIndex = 0;
+            this.COMPortComboBox.SelectedIndexChanged += new System.EventHandler(this.COMPortComboBox_SelectedIndexChanged);
             this.COMPortComboBox.Click += new System.EventHandler(this.COMPortComboBox_Click);
             // 
             // panel1
@@ -95,6 +96,15 @@ namespace TB6600_Application
             this.panel2.Size = new System.Drawing.Size(84, 91);
             this.panel2.TabIndex = 2;
             // 
+            // CalibrateButton
+            // 
+            this.CalibrateButton.Location = new System.Drawing.Point(4, 59);
+            this.CalibrateButton.Name = "CalibrateButton";
+            this.CalibrateButton.Size = new System.Drawing.Size(75, 23);
+            this.CalibrateButton.TabIndex = 2;
+            this.CalibrateButton.Text = "Calibrate";
+            this.CalibrateButton.UseVisualStyleBackColor = true;
+            // 
             // DownButton
             // 
             this.DownButton.Location = new System.Drawing.Point(4, 30);
@@ -125,18 +135,16 @@ namespace TB6600_Application
             this.panel3.Size = new System.Drawing.Size(296, 100);
             this.panel3.TabIndex = 3;
             // 
-            // label2
+            // SetPositionTextBox
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(4, 11);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(83, 17);
-            this.label2.TabIndex = 0;
-            this.label2.Text = "Set Position";
+            this.SetPositionTextBox.Location = new System.Drawing.Point(92, 75);
+            this.SetPositionTextBox.Name = "SetPositionTextBox";
+            this.SetPositionTextBox.Size = new System.Drawing.Size(121, 22);
+            this.SetPositionTextBox.TabIndex = 2;
             // 
             // SetPositionButton
             // 
-            this.SetPositionButton.Location = new System.Drawing.Point(217, 11);
+            this.SetPositionButton.Location = new System.Drawing.Point(219, 74);
             this.SetPositionButton.Name = "SetPositionButton";
             this.SetPositionButton.Size = new System.Drawing.Size(75, 23);
             this.SetPositionButton.TabIndex = 1;
@@ -144,12 +152,14 @@ namespace TB6600_Application
             this.SetPositionButton.UseVisualStyleBackColor = true;
             this.SetPositionButton.Click += new System.EventHandler(this.SetPosition_Click);
             // 
-            // SetPositionTextBox
+            // label2
             // 
-            this.SetPositionTextBox.Location = new System.Drawing.Point(90, 12);
-            this.SetPositionTextBox.Name = "SetPositionTextBox";
-            this.SetPositionTextBox.Size = new System.Drawing.Size(121, 22);
-            this.SetPositionTextBox.TabIndex = 2;
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(6, 74);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(83, 17);
+            this.label2.TabIndex = 0;
+            this.label2.Text = "Set Position";
             // 
             // richTextBox1
             // 
@@ -158,15 +168,6 @@ namespace TB6600_Application
             this.richTextBox1.Size = new System.Drawing.Size(386, 96);
             this.richTextBox1.TabIndex = 4;
             this.richTextBox1.Text = "";
-            // 
-            // CalibrateButton
-            // 
-            this.CalibrateButton.Location = new System.Drawing.Point(4, 59);
-            this.CalibrateButton.Name = "CalibrateButton";
-            this.CalibrateButton.Size = new System.Drawing.Size(75, 23);
-            this.CalibrateButton.TabIndex = 2;
-            this.CalibrateButton.Text = "Calibrate";
-            this.CalibrateButton.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 

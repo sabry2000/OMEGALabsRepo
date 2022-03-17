@@ -26,10 +26,6 @@ void loop() {
     // read the incoming byte:
     incomingByte = Serial.read();
 
-    // say what you got:
-    Serial.print("I received: ");
-    Serial.println(incomingByte, DEC);
-
     if (incomingByte == 'u')
     {
       GoUp();
@@ -42,7 +38,6 @@ void loop() {
 }
 
 void GoUp() {
-  Serial.println("UP");
   for (int i = 0; i < NUMBER_OF_PULSES; i++) //Backward 5000 steps
   {
     digitalWrite(DIRECTION_PIN, HIGH);
