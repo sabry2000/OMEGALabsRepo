@@ -2,7 +2,7 @@ const int PULSE_PIN = 2;
 const int ENABLE_PIN = 3;
 const int DIRECTION_PIN = 4;
 const int PULSE_PERIOD_US = 50;
-const int NUMBER_OF_PULSES = 3200;
+const int NUMBER_OF_PULSES = 6400;
 
 int incomingByte = 0; // for incoming serial data
 

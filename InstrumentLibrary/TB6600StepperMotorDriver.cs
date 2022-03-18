@@ -10,7 +10,7 @@ namespace InstrumentLibrary
 {
     public class TB6600StepperMotorDriver
     {
-        const double DOUBLE_INCHES_PER_REVOLUTION = 0.185;
+        const double DOUBLE_INCHES_PER_REVOLUTION = 0.1875;
         const int INT_BAUD_RATE = 9600; 
 
         private readonly string m_COMPort;
@@ -34,7 +34,7 @@ namespace InstrumentLibrary
             string commandBuffer = "";
             foreach (var cmd in m_commandBuffer)
             {
-                commandBuffer.Append(cmd.Value);
+                commandBuffer += cmd.Value;
             }
             
             m_serialPort.WriteLine(commandBuffer);
