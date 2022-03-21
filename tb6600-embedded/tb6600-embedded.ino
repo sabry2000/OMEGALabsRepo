@@ -3,11 +3,12 @@
 const int PULSE_PIN = 2;
 const int ENABLE_PIN = 3;
 const int DIRECTION_PIN = 4;
-const int PULSE_PERIOD_US = 50;
+const int PULSE_HALF_PERIOD_US = 50;
 
 const String UP = "u";
 const String DOWN = "d";
-const String PULSES = "p"
+const String PULSES = "p";
+const String INVALID_COMMAND_MSG = "Invalid Command";
 
 String command; // for incoming serial data
 int numberOfPulses = 6400;
@@ -66,13 +67,8 @@ void loop() {
 }
 
 void GoUp() {
-<<<<<<< HEAD
   digitalWrite(DIRECTION_PIN, HIGH);
-  
-  for (int i = 0; i < NUMBER_OF_PULSES; i++)
-=======
   for (int i = 0; i < numberOfPulses; i++) //Backward 5000 steps
->>>>>>> 35342badeb518bdab8ac393070293203321a827a
   {
     digitalWrite(PULSE_PIN, HIGH);
     delayMicroseconds(PULSE_HALF_PERIOD_US);
@@ -82,13 +78,9 @@ void GoUp() {
 }
 
 void GoDown() {
-<<<<<<< HEAD
   digitalWrite(DIRECTION_PIN, LOW);
-  
-  for (int i = 0; i < NUMBER_OF_PULSES; i++)
-=======
+
   for (int i = 0; i < numberOfPulses; i++) //Backward 5000 steps
->>>>>>> 35342badeb518bdab8ac393070293203321a827a
   {
     digitalWrite(PULSE_PIN, HIGH);
     delayMicroseconds(PULSE_HALF_PERIOD_US);
@@ -97,6 +89,6 @@ void GoDown() {
   }
 }
 
-void SetNumberOfPulses(int numberOfPulses){
-  NUMBER_OF_PULSES = numberOfPulses;
+void SendInvalidCommandMsg() {
+  Serial.println(INVALID_COMMAND_MSG);
 }
