@@ -1,10 +1,16 @@
+#include <Arduino.h>
+
 const int PULSE_PIN = 2;
 const int ENABLE_PIN = 3;
 const int DIRECTION_PIN = 4;
 const int PULSE_PERIOD_US = 50;
-const int NUMBER_OF_PULSES = 6400;
 
-int incomingByte = 0; // for incoming serial data
+const String UP = "u";
+const String DOWN = "d";
+const String PULSES = "p"
+
+String command; // for incoming serial data
+int numberOfPulses = 6400;
 
 void setup() {
   // put your setup code here, to run once:
@@ -24,21 +30,43 @@ void loop() {
   // send data only when you receive data:
   if (Serial.available() > 0) {
     // read the incoming byte:
-    incomingByte = Serial.read();
+    command = Serial.readString();
 
-    if (incomingByte == 'u')
+    int spaceIndex = command.indexOf(" ");
+    if (spaceIndex == -1)
     {
-      GoUp();
+      if (command == UP)
+      {
+        GoUp();
+      }
+      else if (command == DOWN)
+      {
+        GoDown();
+      }
+      else
+      {
+        SendInvalidCommandMsg();
+      }
     }
-    else if (incomingByte == 'd')
+    else
     {
-      GoDown();
+      String cmd = command.substring(0, spaceIndex);
+      String arg = command.substring(spaceIndex + 1);
+
+      if (cmd == PULSES)
+      {
+        numberOfPulses = arg.toInt();
+      }
+      else
+      {
+        SendInvalidCommandMsg();
+      }
     }
   }
 }
 
 void GoUp() {
-  for (int i = 0; i < NUMBER_OF_PULSES; i++) //Backward 5000 steps
+  for (int i = 0; i < numberOfPulses; i++) //Backward 5000 steps
   {
     digitalWrite(DIRECTION_PIN, HIGH);
     digitalWrite(PULSE_PIN, HIGH);
@@ -49,8 +77,7 @@ void GoUp() {
 }
 
 void GoDown() {
-  Serial.println("DOWN");
-  for (int i = 0; i < NUMBER_OF_PULSES; i++) //Backward 5000 steps
+  for (int i = 0; i < numberOfPulses; i++) //Backward 5000 steps
   {
     digitalWrite(DIRECTION_PIN, LOW);
     digitalWrite(PULSE_PIN, HIGH);
