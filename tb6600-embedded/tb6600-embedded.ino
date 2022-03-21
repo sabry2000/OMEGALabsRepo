@@ -1,18 +1,16 @@
+#include <Arduino.h>
+
 const int PULSE_PIN = 2;
 const int ENABLE_PIN = 3;
 const int DIRECTION_PIN = 4;
-const int PULSE_HALF_PERIOD_US = 50;
+const int PULSE_PERIOD_US = 50;
 
-const char UP_COMMAND = 'u';
-const char DOWN_COMMAND = 'd';
-const char SET_NUMBER_OF_PULSES_COMMAND = 'p';
+const String UP = "u";
+const String DOWN = "d";
+const String PULSES = "p"
 
-
-int NUMBER_OF_PULSES = 6400;
-
-String commandString; // for incoming serial data
-char command;
-String commandArgument;
+String command; // for incoming serial data
+int numberOfPulses = 6400;
 
 void setup() {
   // put your setup code here, to run once:
@@ -32,47 +30,49 @@ void loop() {
   // send data only when you receive data:
   if (Serial.available() > 0) {
     // read the incoming byte:
-    commandString = Serial.readString();
-    command = commandString.charAt(0);
-    
-    int spaceIndex = commandString.indexOf(' ');
-    if (spaceIndex != -1){
-        commandArgument = commandString.substring(spaceIndex);
+    command = Serial.readString();
+
+    int spaceIndex = command.indexOf(" ");
+    if (spaceIndex == -1)
+    {
+      if (command == UP)
+      {
+        GoUp();
+      }
+      else if (command == DOWN)
+      {
+        GoDown();
+      }
+      else
+      {
+        SendInvalidCommandMsg();
+      }
     }
+    else
+    {
+      String cmd = command.substring(0, spaceIndex);
+      String arg = command.substring(spaceIndex + 1);
 
-    switch (command) {
-      case UP_COMMAND:
-        GoUp();
-        break;
-      case DOWN_COMMAND:
-        GoUp();
-        break;
-      case SET_NUMBER_OF_PULSES_COMMAND:
-//        String numberOfPulsesString = Serial.readString();
-//        
-//        for (int i = numberOfPulsesString.length() - 1; i >= 0; i--){
-//          char character = numberOfPulsesString.charAt(i);
-//          if (character == ' ')
-//            numberOfPulsesString.remove(i);
-//        }
-//        int numberOfPulses =  numberOfPulsesString.parseInt(); 
-
-        int numberOfPulses = commandArgument.toInt();
-        SetNumberOfPulses(numberOfPulses);
-        break;
-      default:
-      // clear input buffer;
-        while (Serial.read() >= 0)
-          ; // do nothing
-        break;
+      if (cmd == PULSES)
+      {
+        numberOfPulses = arg.toInt();
+      }
+      else
+      {
+        SendInvalidCommandMsg();
+      }
     }
   }
 }
 
 void GoUp() {
+<<<<<<< HEAD
   digitalWrite(DIRECTION_PIN, HIGH);
   
   for (int i = 0; i < NUMBER_OF_PULSES; i++)
+=======
+  for (int i = 0; i < numberOfPulses; i++) //Backward 5000 steps
+>>>>>>> 35342badeb518bdab8ac393070293203321a827a
   {
     digitalWrite(PULSE_PIN, HIGH);
     delayMicroseconds(PULSE_HALF_PERIOD_US);
@@ -82,9 +82,13 @@ void GoUp() {
 }
 
 void GoDown() {
+<<<<<<< HEAD
   digitalWrite(DIRECTION_PIN, LOW);
   
   for (int i = 0; i < NUMBER_OF_PULSES; i++)
+=======
+  for (int i = 0; i < numberOfPulses; i++) //Backward 5000 steps
+>>>>>>> 35342badeb518bdab8ac393070293203321a827a
   {
     digitalWrite(PULSE_PIN, HIGH);
     delayMicroseconds(PULSE_HALF_PERIOD_US);
