@@ -1,7 +1,6 @@
 #include <Arduino.h>
 #include <LiquidCrystal.h>
 
-
 #include "pinconfig.h"
 #include "TB6600.h"
 
@@ -9,7 +8,7 @@ const char UP = 'u';
 const char DOWN = 'd';
 const char PULSES = 'p';
 const char CALIBRATE = 'c';
-
+const char LOCATION = 'l';
 
 const String INVALID_COMMAND_MSG = "Invalid Command";
 const String CALIBRATION_COMPLETE_MSG = "Calibration Complete";
@@ -26,7 +25,7 @@ void setup() {
   pinMode(UP_BUTTON, INPUT_PULLUP);
   pinMode(DOWN_BUTTON, INPUT_PULLUP);
   attachInterrupt(digitalPinToInterrupt(UP_BUTTON), [](){tb6600.GoUp();}, LOW);
-  attachInterrupt(digitalPinToInterrupt(DOWN_BUTTON), [](){tb6600.GoUp();}, LOW);
+  attachInterrupt(digitalPinToInterrupt(DOWN_BUTTON), [](){tb6600.GoDown();}, LOW);
   Serial.begin(9600); // opens serial port, sets data rate to 9600 bps
 }
 
@@ -41,12 +40,14 @@ void loop() {
     int spaceIndex = command.indexOf(" ");
     if (spaceIndex == -1)
     {
-      if (command.charAt(0) == UP){
+      if (IsCommand(UP)){
         tb6600.GoUp();
-      }else if (command.charAt(0) == DOWN){
+      }else if (IsCommand(DOWN)){
         tb6600.GoDown();
-      }else if (command.charAt(0) == CALIBRATE){
+      }else if (IsCommand(CALIBRATE)){
         tb6600.Calibrate();
+      }else if (IsCommand(LOCATION)){
+        double location = tb6600.
       }else{
         Display(INVALID_COMMAND_MSG);
       }
@@ -63,6 +64,8 @@ void loop() {
     }
   }
 }
+
+bool IsCommand(const char& command){return command.charAt(0) == command;}
 
 void SetNumberOfPulses(String parameters) {
   int numberOfPulses = parameters.toInt();
