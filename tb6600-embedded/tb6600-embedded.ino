@@ -26,6 +26,9 @@ void setup() {
   pinMode(DOWN_BUTTON, INPUT_PULLUP);
   attachInterrupt(digitalPinToInterrupt(UP_BUTTON), [](){tb6600.GoUp();}, LOW);
   attachInterrupt(digitalPinToInterrupt(DOWN_BUTTON), [](){tb6600.GoDown();}, LOW);
+
+  // set up the LCD's number of columns and rows:
+  lcd.begin(16, 2);
   Serial.begin(9600); // opens serial port, sets data rate to 9600 bps
 }
 
