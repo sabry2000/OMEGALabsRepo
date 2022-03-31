@@ -1,37 +1,32 @@
 #include <Arduino.h>
+#include <LiquidCrystal.h>
 
-const int PULSE_PIN = 2;
-const int ENABLE_PIN = 3;
-const int DIRECTION_PIN = 4;
-const int PULSE_HALF_PERIOD_US = 50;
 
-const int CALIBRATE_PIN = 5;
+#include "pinconfig.h"
+#include "TB6600.h"
 
-const String UP = "u";
-const String DOWN = "d";
-const String PULSES = "p";
-const String CALIBRATE = "c";
+const char UP = 'u';
+const char DOWN = 'd';
+const char PULSES = 'p';
+const char CALIBRATE = 'c';
+
 
 const String INVALID_COMMAND_MSG = "Invalid Command";
 const String CALIBRATION_COMPLETE_MSG = "Calibration Complete";
 const String COMMAND_EXECUTED_MSG = "Command Executed";
+const String POSITION_MSG_FORMAT = "Current Position: %.3d";
 
 String command; // for incoming serial data
-int numberOfPulses = 6400;
 
+TB6600 tb6600(PULSE_PIN, ENABLE_PIN, DIRECTION_PIN, CALIBRATE_PIN);
+LiquidCrystal lcd(LCD_RESET_PIN, LCD_ENABLE_PIN, LCD_D4_PIN, LCD_D5_PIN, LCD_D6_PIN, LCD_D7_PIN);
 
 void setup() {
   // put your setup code here, to run once:
-  pinMode(PULSE_PIN, OUTPUT);
-  pinMode(ENABLE_PIN, OUTPUT);
-  pinMode(DIRECTION_PIN, OUTPUT);
-
-  digitalWrite(PULSE_PIN, LOW);
-  digitalWrite(ENABLE_PIN, LOW);
-  digitalWrite(DIRECTION_PIN, LOW);
-
-  pinMode(CALIBRATE_PIN, INPUT);
-
+  pinMode(UP_BUTTON, INPUT_PULLUP);
+  pinMode(DOWN_BUTTON, INPUT_PULLUP);
+  attachInterrupt(digitalPinToInterrupt(UP_BUTTON), [](){tb6600.GoUp();}, LOW);
+  attachInterrupt(digitalPinToInterrupt(DOWN_BUTTON), [](){tb6600.GoUp();}, LOW);
   Serial.begin(9600); // opens serial port, sets data rate to 9600 bps
 }
 
@@ -46,71 +41,52 @@ void loop() {
     int spaceIndex = command.indexOf(" ");
     if (spaceIndex == -1)
     {
-      if (command.equals(UP))
-        GoUp();
-      else if (command.equals(DOWN))
-        GoDown();
-      else if (command.equals(CALIBRATE))
-        Calibrate();
-      else
-        SendInvalidCommandMsg();
+      if (command.charAt(0) == UP){
+        tb6600.GoUp();
+      }else if (command.charAt(0) == DOWN){
+        tb6600.GoDown();
+      }else if (command.charAt(0) == CALIBRATE){
+        tb6600.Calibrate();
+      }else{
+        Display(INVALID_COMMAND_MSG);
+      }
     }
     else
     {
       String cmd = command.substring(0, spaceIndex);
       String parameters = command.substring(spaceIndex + 1);
 
-      if (cmd.equals(PULSES))
+      if (cmd.charAt(0) == PULSES)
         SetNumberOfPulses(parameters);
       else
-        SendInvalidCommandMsg();
+        Display(INVALID_COMMAND_MSG);
     }
   }
 }
 
 void SetNumberOfPulses(String parameters) {
-  numberOfPulses = parameters.toInt();
+  int numberOfPulses = parameters.toInt();
+  numberOfPulses = tb6600.SetNumberOfPulses(numberOfPulses);
   char buff[100];
   sprintf(buff,"Set Number Of Pulses to: %d",numberOfPulses);
-  Serial.println(buff);
+  Display(buff);
 }
 
 void GoUp() {
-  digitalWrite(DIRECTION_PIN, HIGH);
-  for (int i = 0; i < numberOfPulses; i++) //Backward 5000 steps
-  {
-    digitalWrite(PULSE_PIN, HIGH);
-    delayMicroseconds(PULSE_HALF_PERIOD_US);
-    digitalWrite(PULSE_PIN, LOW);
-    delayMicroseconds(PULSE_HALF_PERIOD_US);
-  }
-  SendCommandExecutedMsg();
+  tb6600.GoUp();
+  Display(COMMAND_EXECUTED_MSG);
 }
 
 void GoDown() {
-  digitalWrite(DIRECTION_PIN, LOW);
-
-  for (int i = 0; i < numberOfPulses; i++) //Backward 5000 steps
-  {
-    digitalWrite(PULSE_PIN, HIGH);
-    delayMicroseconds(PULSE_HALF_PERIOD_US);
-    digitalWrite(PULSE_PIN, LOW);
-    delayMicroseconds(PULSE_HALF_PERIOD_US);
-  }
-  SendCommandExecutedMsg();
+  tb6600.GoDown();
+  Display(COMMAND_EXECUTED_MSG);
 }
 
 void Calibrate() {
-  while (digitalRead(CALIBRATE_PIN) == LOW) {
-    GoUp();
-  }
-  Serial.println(CALIBRATION_COMPLETE_MSG);
+  tb6600.Calibrate();
+  Display(CALIBRATION_COMPLETE_MSG);
 }
 
-void SendCommandExecutedMsg() {
-  Serial.println(COMMAND_EXECUTED_MSG);
-}
-
-void SendInvalidCommandMsg() {
-  Serial.println(INVALID_COMMAND_MSG);
+void Display(const String& msg){
+  Serial.println(msg);
 }
