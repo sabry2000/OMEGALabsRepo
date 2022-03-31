@@ -25,4 +25,5 @@ class TB6600 {
     void GoDown();
     void Calibrate();
     int SetNumberOfPulses(const int& numberOfPulses);
+    double GetCurrentLocation();
 };
