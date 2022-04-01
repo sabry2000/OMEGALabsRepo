@@ -13,9 +13,16 @@ const char LOCATION = 'l';
 const String INVALID_COMMAND_MSG = "Invalid Command";
 const String CALIBRATION_COMPLETE_MSG = "Calibration Complete";
 const String COMMAND_EXECUTED_MSG = "Command Executed";
-const String POSITION_MSG_FORMAT = "Current Position: %.3d";
+
+const String UP_COMMAND_MSG = "UP Command Executed";
+const String DOWN_COMMAND_MSG = "DOWN Command Executed";
+
+const String LOCATION_MSG_HEADER = "Current Location: ";
+const char LOCATION_MSG_FORMAT[25] = "Current Location: %.3d";
+const char PULSES_MSG_FORMAT[50] = "Set Number Of Pulses to: %.3d";
 
 String command; // for incoming serial data
+char msg[100];
 
 TB6600 tb6600(PULSE_PIN, ENABLE_PIN, DIRECTION_PIN, CALIBRATE_PIN);
 LiquidCrystal lcd(LCD_RESET_PIN, LCD_ENABLE_PIN, LCD_D4_PIN, LCD_D5_PIN, LCD_D6_PIN, LCD_D7_PIN);
@@ -24,8 +31,10 @@ void setup() {
   // put your setup code here, to run once:
   pinMode(UP_BUTTON, INPUT_PULLUP);
   pinMode(DOWN_BUTTON, INPUT_PULLUP);
-  attachInterrupt(digitalPinToInterrupt(UP_BUTTON), [](){tb6600.GoUp();}, LOW);
-  attachInterrupt(digitalPinToInterrupt(DOWN_BUTTON), [](){tb6600.GoDown();}, LOW);
+  //pinMode(CALIBRATE_BUTTON, INPUT_PULLUP);
+  attachInterrupt(digitalPinToInterrupt(UP_BUTTON), GoUp, LOW);
+  attachInterrupt(digitalPinToInterrupt(DOWN_BUTTON), GoDown, LOW);
+  //attachInterrupt(digitalPinToInterrupt(CALIBRATE_BUTTON), Calibrate, LOW);
 
   // set up the LCD's number of columns and rows:
   lcd.begin(16, 2);
@@ -43,16 +52,20 @@ void loop() {
     int spaceIndex = command.indexOf(" ");
     if (spaceIndex == -1)
     {
-      if (IsCommand(UP)){
-        tb6600.GoUp();
-      }else if (IsCommand(DOWN)){
-        tb6600.GoDown();
-      }else if (IsCommand(CALIBRATE)){
-        tb6600.Calibrate();
-      }else if (IsCommand(LOCATION)){
-        double location = tb6600.
+      if (command.charAt(0) == UP){
+        GoUp();
+      
+      }else if (command.charAt(0) == DOWN){
+        GoDown();   
+      
+      }else if (command.charAt(0) == CALIBRATE){
+        Calibrate();
+              
+      }else if (command.charAt(0) == LOCATION){
+        Serial.println(GetLocationMsg());
+      
       }else{
-        Display(INVALID_COMMAND_MSG);
+        Serial.println(INVALID_COMMAND_MSG);
       }
     }
     else
@@ -63,36 +76,53 @@ void loop() {
       if (cmd.charAt(0) == PULSES)
         SetNumberOfPulses(parameters);
       else
-        Display(INVALID_COMMAND_MSG);
+        Serial.println(INVALID_COMMAND_MSG);
     }
+    
+    lcd.autoscroll();
   }
 }
 
-bool IsCommand(const char& command){return command.charAt(0) == command;}
+String GetLocationMsg(){
+  double location = tb6600.GetCurrentLocation();
+  sprintf(msg, LOCATION_MSG_FORMAT, location);
+  return msg;
+}
+
+void GoUp(){
+  tb6600.GoUp();
+  
+  double location = tb6600.GetCurrentLocation();
+  sprintf(msg, LOCATION_MSG_FORMAT, location);
+  Serial.println(msg);
+
+  lcd.setCursor(0,0);
+  lcd.print(LOCATION_MSG_HEADER);
+  lcd.setCursor(0,1);
+  lcd.print(location);
+}
+
+void GoDown(){
+  tb6600.GoDown();
+  
+  double location = tb6600.GetCurrentLocation();
+  sprintf(msg, LOCATION_MSG_FORMAT, location);
+  Serial.println(msg);
+
+  lcd.setCursor(0,0);
+  lcd.print(LOCATION_MSG_HEADER);
+  lcd.setCursor(0,1);
+  lcd.print(location);
+}
+
+void Calibrate(){
+  tb6600.Calibrate();
+  Serial.println(CALIBRATION_COMPLETE_MSG);
+}
 
 void SetNumberOfPulses(String parameters) {
   int numberOfPulses = parameters.toInt();
   numberOfPulses = tb6600.SetNumberOfPulses(numberOfPulses);
-  char buff[100];
-  sprintf(buff,"Set Number Of Pulses to: %d",numberOfPulses);
-  Display(buff);
-}
-
-void GoUp() {
-  tb6600.GoUp();
-  Display(COMMAND_EXECUTED_MSG);
-}
-
-void GoDown() {
-  tb6600.GoDown();
-  Display(COMMAND_EXECUTED_MSG);
-}
-
-void Calibrate() {
-  tb6600.Calibrate();
-  Display(CALIBRATION_COMPLETE_MSG);
-}
-
-void Display(const String& msg){
+  sprintf(msg, PULSES_MSG_FORMAT, numberOfPulses);
   Serial.println(msg);
 }

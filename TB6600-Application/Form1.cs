@@ -45,14 +45,10 @@ namespace TB6600_Application
         private void SetPosition_Click(object sender, EventArgs e)
         {
             var position = Double.Parse(SetPositionTextBox.Text);
-            double positionInches;
-            if (units.Equals("cm"))
-                positionInches = 0.3937 * position;
-            else if (units.Equals("mm"))
-                positionInches = 3.937 * position;
-            else
-                positionInches = position;
-            
+            SetPositionTextBox.Clear();
+
+            double positionInches = ConvertToInches(position, units);
+
             tb6600StepperMotorDriver.SetPosition(positionInches);
             UpdateTerminal();
         }
@@ -83,6 +79,42 @@ namespace TB6600_Application
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             units = unitsComboBox.SelectedItem.ToString();
+        }
+
+        private void MoveUpByButton_Click(object sender, EventArgs e)
+        {
+            var position = Double.Parse(MoveByTextBox.Text);
+            MoveByTextBox.Clear();
+
+            double positionInches = ConvertToInches(position, units);
+
+            tb6600StepperMotorDriver.MoveUp(positionInches);
+            UpdateTerminal();
+        }
+
+        private void MoveDownByButton_Click(object sender, EventArgs e)
+        {
+            var position = Double.Parse(MoveByTextBox.Text);
+            MoveByTextBox.Clear();
+
+            double positionInches = ConvertToInches(position, units);
+
+            tb6600StepperMotorDriver.MoveDown(positionInches);
+            UpdateTerminal();
+        }
+        
+
+        private double ConvertToInches(double value, String units)
+        {
+            double valueInches;
+            if (units.Equals("cm"))
+                valueInches = 0.3937 * value;
+            else if (units.Equals("mm"))
+                valueInches = 3.937 * value;
+            else
+                valueInches = value;
+
+            return valueInches;
         }
     }
 }

@@ -104,15 +104,6 @@ namespace InstrumentLibrary
             QueueCommand(TB6600Command.PulsesCommand(remainingPulses));
             QueueCommand(TB6600Command.DOWN);
             ExecuteCommands();
-            /*            var numberOfRevolutions = distanceInches / DOUBLE_INCHES_PER_REVOLUTION;
-                        var numberOfWholeRevolutions = (int)numberOfRevolutions;
-                        var revolutionFractionRemaining = ((decimal)numberOfRevolutions % 1);
-
-                        for (int i = 0; i < numberOfWholeRevolutions; i++)
-                        {
-                            QueueCommand(TB6600Command.DOWN);
-                            ExecuteCommands();
-                        }*/
         }
 
 

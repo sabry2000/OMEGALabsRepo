@@ -16,6 +16,12 @@ TB6600::TB6600(const int& pulsePin, const int& enablePin, const int& directionPi
   digitalWrite(m_pulsePin, LOW);
   digitalWrite(m_enablePin, LOW);
   digitalWrite(m_directionPin, LOW);
+
+  Calibrate();
+}
+
+double TB6600::GetCurrentLocation(){
+  return m_location;
 }
 
 bool TB6600::IsAtZero() {
@@ -24,29 +30,33 @@ bool TB6600::IsAtZero() {
 
 void TB6600::GoUp() {
   digitalWrite(m_directionPin, HIGH);
-  for (int i = 0; i < m_numberOfPulses; i++)
+  
+  int i;
+  for (i = 0; (i < m_numberOfPulses) && (m_location + 1/PULSES_PER_REVOLUTION < MAXIMUM_HEIGHT); i++)
   {
     digitalWrite(m_pulsePin, HIGH);
     delayMicroseconds(PULSE_HALF_PERIOD_US);
     digitalWrite(m_pulsePin, LOW);
     delayMicroseconds(PULSE_HALF_PERIOD_US);
   }
+  
+  m_location += (INCHES_PER_REVOLUTION * i/ PULSES_PER_REVOLUTION);
 }
 
 void TB6600::GoDown() {
   digitalWrite(m_directionPin, LOW);
-  for (int i = 0; i < m_numberOfPulses; i++)
+  
+  int i;
+  for (i = 0; (i < m_numberOfPulses) && (!IsAtZero()); i++)
   {
-    if (IsAtZero()) {
-      break;
-    }
-    else {
-      digitalWrite(m_pulsePin, HIGH);
-      delayMicroseconds(PULSE_HALF_PERIOD_US);
-      digitalWrite(m_pulsePin, LOW);
-      delayMicroseconds(PULSE_HALF_PERIOD_US);
-    }
+    digitalWrite(m_pulsePin, HIGH);
+    delayMicroseconds(PULSE_HALF_PERIOD_US);
+    digitalWrite(m_pulsePin, LOW);
+    delayMicroseconds(PULSE_HALF_PERIOD_US);
   }
+  
+  m_location -= (INCHES_PER_REVOLUTION * i/ PULSES_PER_REVOLUTION);
+  
 }
 
 void TB6600::Calibrate() {
