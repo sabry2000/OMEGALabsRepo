@@ -1,17 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace InstrumentLibrary
 {
     public class TB6600Command
     {
         private TB6600Command(string command) : this(command, new List<int>()) { }
-        private TB6600Command(string command, List<int> arguments) { 
-            Command = command; 
-            Arguments = (List<int>)arguments; 
+        private TB6600Command(string command, List<int> arguments)
+        {
+            Command = command;
+            Arguments = (List<int>)arguments;
         }
         public string Command { get; private set; }
         public List<int> Arguments { get; private set; }
