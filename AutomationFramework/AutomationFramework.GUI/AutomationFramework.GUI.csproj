@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{91D2339F-3C61-4A9F-8088-B8DA287CA1EE}</ProjectGuid>
+    <ProjectGuid>{E9CA2DF6-A04D-4449-A576-CB7412762AC3}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>AutomationApplication</RootNamespace>
-    <AssemblyName>AutomationApplication</AssemblyName>
+    <RootNamespace>AutomationFramework.GUI</RootNamespace>
+    <AssemblyName>AutomationFramework.GUI</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>

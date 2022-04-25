@@ -2,21 +2,21 @@
 using System.Collections.Generic;
 using System.IO.Ports;
 
-namespace InstrumentLibrary
+namespace InstrumentLibrary.TB6600
 {
     public class TB6600StepperMotorDriver
     {
         public const int INT_MAX_HEIGHT_INCHES = 12;
-        const double DOUBLE_INCHES_PER_REVOLUTION = 0.1875;
-        const int DOUBLE_PULSES_PER_REVOLUTION = 6400;
-        const int INT_BAUD_RATE = 9600;
+        private const double DOUBLE_INCHES_PER_REVOLUTION = 0.1875;
+        private const int DOUBLE_PULSES_PER_REVOLUTION = 6400;
+        private const int INT_BAUD_RATE = 9600;
 
         private readonly string m_COMPort;
         private SerialPort m_serialPort;
         private IList<TB6600Command> m_commandBuffer = new List<TB6600Command>();
 
         public double Position { get; private set; }
-        public String LastMessage { get; private set; }
+        public string LastMessage { get; private set; }
 
         public TB6600StepperMotorDriver(String COMPort)
         {

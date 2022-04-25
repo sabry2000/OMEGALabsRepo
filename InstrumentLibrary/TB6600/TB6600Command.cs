@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace InstrumentLibrary
+namespace InstrumentLibrary.TB6600
 {
     public class TB6600Command
     {

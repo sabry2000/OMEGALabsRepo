@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{10730821-30E2-4543-B0A2-4B884867CBFD}</ProjectGuid>
+    <ProjectGuid>{EDDD88DC-1B2B-4B4F-8641-A01176DA0D00}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>InstrumentLibrary</RootNamespace>
-    <AssemblyName>InstrumentLibrary</AssemblyName>
+    <RootNamespace>AutomationFramework.Utils</RootNamespace>
+    <AssemblyName>AutomationFramework.Utils</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -41,12 +41,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="TB6600\TB6600Command.cs" />
-    <Compile Include="TB6600\TB6600StepperMotorDriver.cs" />
+    <Compile Include="FactoryHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
