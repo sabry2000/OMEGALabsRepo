@@ -23,6 +23,7 @@ const char PULSES_MSG_FORMAT[50] = "Set Number Of Pulses to: %.3d";
 
 String command; // for incoming serial data
 char msg[100];
+double location;
 
 TB6600 tb6600(PULSE_PIN, ENABLE_PIN, DIRECTION_PIN, CALIBRATE_PIN);
 LiquidCrystal lcd(LCD_RESET_PIN, LCD_ENABLE_PIN, LCD_D4_PIN, LCD_D5_PIN, LCD_D6_PIN, LCD_D7_PIN);
@@ -31,19 +32,30 @@ void setup() {
   // put your setup code here, to run once:
   pinMode(UP_BUTTON, INPUT_PULLUP);
   pinMode(DOWN_BUTTON, INPUT_PULLUP);
-  //pinMode(CALIBRATE_BUTTON, INPUT_PULLUP);
+  pinMode(CALIBRATE_BUTTON, INPUT_PULLUP);
+  
   attachInterrupt(digitalPinToInterrupt(UP_BUTTON), GoUp, LOW);
   attachInterrupt(digitalPinToInterrupt(DOWN_BUTTON), GoDown, LOW);
   //attachInterrupt(digitalPinToInterrupt(CALIBRATE_BUTTON), Calibrate, LOW);
 
   // set up the LCD's number of columns and rows:
   lcd.begin(16, 2);
+  lcd.setCursor(0,0);
+  lcd.print(LOCATION_MSG_HEADER);
+
+  location = tb6600.GetCurrentLocation();
+  lcd.setCursor(0,1);
+  lcd.print(location);
   Serial.begin(9600); // opens serial port, sets data rate to 9600 bps
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
   // send data only when you receive data:
+  if (digitalRead(CALIBRATE_BUTTON) == LOW)
+  {
+    Calibrate();
+  }
   if (Serial.available() > 0) {
     // read the incoming byte:
     command = Serial.readString();
@@ -84,7 +96,7 @@ void loop() {
 }
 
 String GetLocationMsg(){
-  double location = tb6600.GetCurrentLocation();
+  location = tb6600.GetCurrentLocation();
   sprintf(msg, LOCATION_MSG_FORMAT, location);
   return msg;
 }
@@ -117,7 +129,11 @@ void GoDown(){
 
 void Calibrate(){
   tb6600.Calibrate();
+
+  location = tb6600.GetCurrentLocation();
   Serial.println(CALIBRATION_COMPLETE_MSG);
+  lcd.setCursor(0,1);
+  lcd.print(location);
 }
 
 void SetNumberOfPulses(String parameters) {

@@ -1,13 +1,13 @@
 // INTERRUPTS CAN ONLY BE ATTACHED TO PINS 2 AND 3
 const int UP_BUTTON = 2;
 const int DOWN_BUTTON = 3;
-//const int CALIBRATE_BUTTON = A5;
+const int CALIBRATE_BUTTON = 4;
 
 // STEPPER MOTOR PINS
 const int PULSE_PIN = A2;
 const int ENABLE_PIN = A0;
 const int DIRECTION_PIN = A1;
-const int CALIBRATE_PIN = A4;
+const int CALIBRATE_PIN = A3;
 
 // LCD PINS
 const int LCD_RESET_PIN = 7;

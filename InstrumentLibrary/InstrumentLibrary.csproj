@@ -41,8 +41,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="TB6600Command.cs" />
-    <Compile Include="TB6600StepperMotorDriver.cs" />
+    <Compile Include="TB6600\TB6600Command.cs" />
+    <Compile Include="TB6600\TB6600StepperMotorDriver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
