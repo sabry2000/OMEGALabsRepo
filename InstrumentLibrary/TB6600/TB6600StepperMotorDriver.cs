@@ -87,8 +87,12 @@ namespace InstrumentLibrary.TB6600
             QueueCommand(TB6600Command.PulsesCommand(INT_MAXIMUM_UC_INT));
             for (int i = 0; i < numberOfPulsesAtMaxSize; i++)
                 QueueCommand(TB6600Command.UP);
-            QueueCommand(TB6600Command.PulsesCommand(remainingPulses));
-            QueueCommand(TB6600Command.UP);
+
+            if (remainingPulses > 0)
+            {
+                QueueCommand(TB6600Command.PulsesCommand(remainingPulses));
+                QueueCommand(TB6600Command.UP);
+            }
             ExecuteCommands();
 
         }
@@ -110,8 +114,12 @@ namespace InstrumentLibrary.TB6600
             QueueCommand(TB6600Command.PulsesCommand(INT_MAXIMUM_UC_INT));
             for (int i = 0; i < numberOfPulsesAtMaxSize; i++)
                 QueueCommand(TB6600Command.DOWN);
-            QueueCommand(TB6600Command.PulsesCommand(remainingPulses));
-            QueueCommand(TB6600Command.DOWN);
+            
+            if (remainingPulses > 0)
+            {
+                QueueCommand(TB6600Command.PulsesCommand(remainingPulses));
+                QueueCommand(TB6600Command.DOWN);
+            }
             ExecuteCommands();
         }
 
