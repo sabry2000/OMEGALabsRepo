@@ -10,6 +10,7 @@ namespace InstrumentLibrary.TB6600
         private const double DOUBLE_INCHES_PER_REVOLUTION = 0.1875;
         private const int DOUBLE_PULSES_PER_REVOLUTION = 6400;
         private const int INT_BAUD_RATE = 9600;
+        const int INT_MAXIMUM_UC_INT = 32767;
 
         private readonly string m_COMPort;
         private SerialPort m_serialPort;
@@ -80,9 +81,16 @@ namespace InstrumentLibrary.TB6600
             var numberOfRevolutions = distanceInches / DOUBLE_INCHES_PER_REVOLUTION;
             int numberOfPulses = (int)(DOUBLE_PULSES_PER_REVOLUTION * numberOfRevolutions);
 
-            QueueCommand(TB6600Command.PulsesCommand(numberOfPulses));
+            int numberOfPulsesAtMaxSize = numberOfPulses / INT_MAXIMUM_UC_INT;
+            var remainingPulses = numberOfPulses % INT_MAXIMUM_UC_INT;
+
+            QueueCommand(TB6600Command.PulsesCommand(INT_MAXIMUM_UC_INT));
+            for (int i = 0; i < numberOfPulsesAtMaxSize; i++)
+                QueueCommand(TB6600Command.UP);
+            QueueCommand(TB6600Command.PulsesCommand(remainingPulses));
             QueueCommand(TB6600Command.UP);
             ExecuteCommands();
+
         }
 
         public void MoveDown()
@@ -96,7 +104,13 @@ namespace InstrumentLibrary.TB6600
             var numberOfRevolutions = distanceInches / DOUBLE_INCHES_PER_REVOLUTION;
             int numberOfPulses = (int)(DOUBLE_PULSES_PER_REVOLUTION * numberOfRevolutions);
 
-            QueueCommand(TB6600Command.PulsesCommand(numberOfPulses));
+            int numberOfPulsesAtMaxSize = numberOfPulses / INT_MAXIMUM_UC_INT;
+            var remainingPulses = numberOfPulses % INT_MAXIMUM_UC_INT;
+
+            QueueCommand(TB6600Command.PulsesCommand(INT_MAXIMUM_UC_INT));
+            for (int i = 0; i < numberOfPulsesAtMaxSize; i++)
+                QueueCommand(TB6600Command.DOWN);
+            QueueCommand(TB6600Command.PulsesCommand(remainingPulses));
             QueueCommand(TB6600Command.DOWN);
             ExecuteCommands();
         }
