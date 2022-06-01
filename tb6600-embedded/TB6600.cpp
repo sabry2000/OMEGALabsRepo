@@ -63,7 +63,7 @@ void TB6600::Calibrate() {
 
 //add logic to check size for number of pulses validity
 int TB6600::SetNumberOfPulses(const int& numberOfPulses) {
-  if (numberOfPulses <= 6400 && numberOfPulses > 0)
+  if (numberOfPulses > 0)
     m_numberOfPulses = numberOfPulses;
   return m_numberOfPulses; 
 }

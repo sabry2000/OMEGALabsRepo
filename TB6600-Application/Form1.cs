@@ -30,6 +30,7 @@ namespace TB6600_Application
         private void COMPortComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             selectedCOMPort = COMPortComboBox.SelectedItem.ToString();
+            tb6600StepperMotorDriver = new TB6600StepperMotorDriver(selectedCOMPort);
         }
 
         private void UnitsComboBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -39,25 +40,26 @@ namespace TB6600_Application
 
         private void ConnectButton_Click(object sender, EventArgs e)
         {
-            tb6600StepperMotorDriver = new TB6600StepperMotorDriver(selectedCOMPort);
+            tb6600StepperMotorDriver.Connect();
+            Terminal.AppendText("Connection Established\n");
         }
 
         private void UpButton_Click(object sender, EventArgs e)
         {
             tb6600StepperMotorDriver.MoveUp();
-            UpdateTerminal();
+            UpdateUI();
         }
 
         private void DownButton_Click(object sender, EventArgs e)
         {
             tb6600StepperMotorDriver.MoveDown();
-            UpdateTerminal();
+            UpdateUI();
         }
 
         private void CalibrateButton_Click(object sender, EventArgs e)
         {
             tb6600StepperMotorDriver.Calibrate();
-            UpdateTerminal();
+            UpdateUI();
         }
 
         private void SetPosition_Click(object sender, EventArgs e)
@@ -68,12 +70,13 @@ namespace TB6600_Application
             var positionInches = Units.Convert(position, currentUnits, Unit.inch);
 
             tb6600StepperMotorDriver.SetPosition(positionInches);
-            UpdateTerminal();
+            UpdateUI();
         }
 
-        private void UpdateTerminal()
+        private void UpdateUI()
         {
             Terminal.AppendText(tb6600StepperMotorDriver.LastMessage);
+            CurrentPositionTextBox.Text = Units.Convert(tb6600StepperMotorDriver.Position, Unit.inch, currentUnits).ToString();
         }
 
         private void MoveButton_Click(object sender, EventArgs e)
@@ -88,7 +91,7 @@ namespace TB6600_Application
             else
                 tb6600StepperMotorDriver.MoveDown(positionInches);
 
-            UpdateTerminal();
+            UpdateUI();
         }
 
         private void MinButton_Click(object sender, EventArgs e)
@@ -117,12 +120,12 @@ namespace TB6600_Application
             delta = Units.Convert(delta, currentUnits, Unit.inch);
 
             tb6600StepperMotorDriver.SetPosition(startPosition);
-            UpdateTerminal();
+            UpdateUI();
 
             for (int i = 0; i < steps; i++)
             {
                 tb6600StepperMotorDriver.Move(delta);
-                UpdateTerminal();
+                UpdateUI();
                 Thread.Sleep((int)delay);
             }
         }

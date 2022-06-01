@@ -23,6 +23,10 @@ namespace InstrumentLibrary.TB6600
         {
             m_COMPort = COMPort;
             m_serialPort = new SerialPort(COMPort, INT_BAUD_RATE);
+        }
+
+        public void Connect()
+        {
             m_serialPort.Open();
         }
 
@@ -55,25 +59,25 @@ namespace InstrumentLibrary.TB6600
             if (distanceInches > 0)
                 MoveUp(distanceInches);
             else
-                MoveDown(distanceInches);
+                MoveDown(Math.Abs(distanceInches));
+
+            Position = positionInches;
         }
 
         public void Move(double distanceInches)
         {
-            var numberOfRevolutions = Math.Abs(distanceInches / DOUBLE_INCHES_PER_REVOLUTION);
-            int numberOfPulses = (int)(DOUBLE_PULSES_PER_REVOLUTION * numberOfRevolutions);
-
-            TB6600Command cmd = distanceInches > 0 ? TB6600Command.UP : TB6600Command.DOWN;
-
-            QueueCommand(TB6600Command.PulsesCommand(numberOfPulses));
-            QueueCommand(cmd);
-            ExecuteCommands();
+            if (distanceInches > 0)
+                MoveUp(distanceInches);
+            else
+                MoveDown(Math.Abs(distanceInches));
         }
 
         public void MoveUp()
         {
+            QueueCommand(TB6600Command.PulsesCommand(DOUBLE_PULSES_PER_REVOLUTION));
             QueueCommand(TB6600Command.UP);
             ExecuteCommands();
+            Position += DOUBLE_INCHES_PER_REVOLUTION;
         }
 
         public void MoveUp(double distanceInches)
@@ -95,12 +99,16 @@ namespace InstrumentLibrary.TB6600
             }
             ExecuteCommands();
 
+            Position += distanceInches;
+
         }
 
         public void MoveDown()
         {
+            QueueCommand(TB6600Command.PulsesCommand(DOUBLE_PULSES_PER_REVOLUTION));
             QueueCommand(TB6600Command.DOWN);
             ExecuteCommands();
+            Position -= DOUBLE_INCHES_PER_REVOLUTION;
         }
 
         public void MoveDown(double distanceInches)
@@ -121,6 +129,8 @@ namespace InstrumentLibrary.TB6600
                 QueueCommand(TB6600Command.DOWN);
             }
             ExecuteCommands();
+
+            Position -= distanceInches;
         }
 
 

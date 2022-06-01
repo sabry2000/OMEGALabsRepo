@@ -22,7 +22,7 @@ const char LOCATION_MSG_FORMAT[25] = "Current Location: %.3d";
 const char PULSES_MSG_FORMAT[50] = "Set Number Of Pulses to: %.3d";
 
 String command; // for incoming serial data
-char msg[100];
+char msg[200];
 double location;
 
 TB6600 tb6600(PULSE_PIN, ENABLE_PIN, DIRECTION_PIN, CALIBRATE_PIN);
@@ -90,8 +90,6 @@ void loop() {
       else
         Serial.println(INVALID_COMMAND_MSG);
     }
-    
-    lcd.autoscroll();
   }
 }
 
@@ -105,11 +103,10 @@ void GoUp(){
   tb6600.GoUp();
   
   double location = tb6600.GetCurrentLocation();
-  sprintf(msg, LOCATION_MSG_FORMAT, location);
+  dtostrf(location, 9, 4, msg);
+  Serial.print(LOCATION_MSG_HEADER);
   Serial.println(msg);
 
-  lcd.setCursor(0,0);
-  lcd.print(LOCATION_MSG_HEADER);
   lcd.setCursor(0,1);
   lcd.print(location);
 }
@@ -118,11 +115,10 @@ void GoDown(){
   tb6600.GoDown();
   
   double location = tb6600.GetCurrentLocation();
-  sprintf(msg, LOCATION_MSG_FORMAT, location);
+  dtostrf(location, 9, 4, msg);
+  Serial.print(LOCATION_MSG_HEADER);
   Serial.println(msg);
 
-  lcd.setCursor(0,0);
-  lcd.print(LOCATION_MSG_HEADER);
   lcd.setCursor(0,1);
   lcd.print(location);
 }
