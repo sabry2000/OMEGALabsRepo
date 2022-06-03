@@ -56,6 +56,28 @@ namespace TB6600_Application
             UpdateUI();
         }
 
+        private void UnitsComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            currentUnits = Units.FromString(UnitsComboBox.SelectedItem.ToString());
+        }
+
+        private void ConnectButton_Click(object sender, EventArgs e)
+        {
+            tb6600StepperMotorDriver = new TB6600StepperMotorDriver(selectedCOMPort);
+        }
+
+        private void UpButton_Click(object sender, EventArgs e)
+        {
+            tb6600StepperMotorDriver.MoveUp();
+            UpdateTerminal();
+        }
+
+        private void DownButton_Click(object sender, EventArgs e)
+        {
+            tb6600StepperMotorDriver.MoveDown();
+            UpdateTerminal();
+        }
+
         private void CalibrateButton_Click(object sender, EventArgs e)
         {
             tb6600StepperMotorDriver.Calibrate();

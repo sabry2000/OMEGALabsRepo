@@ -28,6 +28,62 @@ double location;
 TB6600 tb6600(PULSE_PIN, ENABLE_PIN, DIRECTION_PIN, CALIBRATE_PIN);
 LiquidCrystal lcd(LCD_RESET_PIN, LCD_ENABLE_PIN, LCD_D4_PIN, LCD_D5_PIN, LCD_D6_PIN, LCD_D7_PIN);
 
+String GetLocationMsg(){
+  location = tb6600.GetCurrentLocation();
+  sprintf(msg, LOCATION_MSG_FORMAT, location);
+  return msg;
+}
+
+void IRAM_ATTR GoUp(){
+  tb6600.GoUp();
+  
+  location = tb6600.GetCurrentLocation();
+  sprintf(msg, LOCATION_MSG_FORMAT, location);
+  Serial.println(msg);
+
+  lcd.setCursor(0,1);
+  lcd.print(location);
+}
+
+void IRAM_ATTR GoDown(){
+  tb6600.GoDown();
+  
+  location = tb6600.GetCurrentLocation();
+  sprintf(msg, LOCATION_MSG_FORMAT, location);
+  Serial.println(msg);
+  
+  lcd.setCursor(0,1);
+  lcd.print(location);
+}
+
+void IRAM_ATTR Calibrate(){
+  tb6600.Calibrate();
+
+  location = tb6600.GetCurrentLocation();
+  Serial.println(CALIBRATION_COMPLETE_MSG);
+  lcd.setCursor(0,1);
+  lcd.print(location);
+}
+
+void SetNumberOfPulses(String parameters) {
+  int numberOfPulses = parameters.toInt();
+  numberOfPulses = tb6600.SetNumberOfPulses(numberOfPulses);
+  sprintf(msg, PULSES_MSG_FORMAT, numberOfPulses);
+  Serial.println(msg);
+}
+
+void AttachInterrupts(){
+  attachInterrupt(UP_BUTTON, GoUp, LOW);
+  attachInterrupt(DOWN_BUTTON, GoDown, LOW);
+  attachInterrupt(CALIBRATE_BUTTON, Calibrate, LOW);
+}
+
+void DetachInterrupts(){
+  detachInterrupt(UP_BUTTON);
+  detachInterrupt(DOWN_BUTTON);
+  detachInterrupt(CALIBRATE_BUTTON);
+}
+
 void setup() {
   // put your setup code here, to run once:
   pinMode(UP_BUTTON, INPUT_PULLUP);
@@ -57,6 +113,7 @@ void loop() {
     Calibrate();
   }
   if (Serial.available() > 0) {
+    DetachInterrupts();
     // read the incoming byte:
     command = Serial.readString();
     command.remove(command.length()-1);

@@ -5,8 +5,8 @@ class TB6600 {
     static const int MAX_INT = 0x7FFF;
   private:
     static const int PULSE_HALF_PERIOD_US = 50;
-    static const double INCHES_PER_REVOLUTION = 0.1875;
-    static const double PULSES_PER_REVOLUTION = 6400;
+    static constexpr double INCHES_PER_REVOLUTION = 0.1875;
+    static const int PULSES_PER_REVOLUTION = 6400;
     static const int MAXIMUM_HEIGHT = 12;
     int m_numberOfPulses = 6400;
 

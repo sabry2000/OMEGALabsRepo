@@ -1,7 +1,7 @@
-﻿<Application x:Class="AutomationApplication.App"
+﻿<Application x:Class="AutomationFramework.GUI.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:AutomationApplication"
+             xmlns:local="clr-namespace:AutomationFramework.GUI"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
          
