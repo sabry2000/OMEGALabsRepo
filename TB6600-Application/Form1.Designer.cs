@@ -31,13 +31,13 @@ namespace TB6600_Application
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LinearStagesApplication));
             this.COMPortComboBox = new System.Windows.Forms.ComboBox();
-            this.panel1 = new System.Windows.Forms.Panel();
+            this.COMPortPanel = new System.Windows.Forms.Panel();
             this.ConnectButton = new System.Windows.Forms.Button();
             this.COMPortLabel = new System.Windows.Forms.Label();
             this.CalibrateButton = new System.Windows.Forms.Button();
             this.MoveDownButton = new System.Windows.Forms.Button();
             this.MoveUpButton = new System.Windows.Forms.Button();
-            this.panel3 = new System.Windows.Forms.Panel();
+            this.MovePanel = new System.Windows.Forms.Panel();
             this.MoveButton = new System.Windows.Forms.Button();
             this.MoveByTextBox = new System.Windows.Forms.TextBox();
             this.MoveByLabel = new System.Windows.Forms.Label();
@@ -59,21 +59,25 @@ namespace TB6600_Application
             this.MinButton = new System.Windows.Forms.Button();
             this.StartTextBox = new System.Windows.Forms.TextBox();
             this.StartLabel = new System.Windows.Forms.Label();
-            this.panel2 = new System.Windows.Forms.Panel();
+            this.UnitsPanel = new System.Windows.Forms.Panel();
             this.TabControl = new System.Windows.Forms.TabControl();
             this.MoveTab = new System.Windows.Forms.TabPage();
             this.SweepTab = new System.Windows.Forms.TabPage();
-            this.panel4 = new System.Windows.Forms.Panel();
+            this.CurrentPositionPanel = new System.Windows.Forms.Panel();
             this.CurrentPositionTextBox = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.panel1.SuspendLayout();
-            this.panel3.SuspendLayout();
+            this.CurrentPositionLabel = new System.Windows.Forms.Label();
+            this.MillisSecondsLabel = new System.Windows.Forms.Label();
+            this.TerminalPanel = new System.Windows.Forms.Panel();
+            this.TerminalLabel = new System.Windows.Forms.Label();
+            this.COMPortPanel.SuspendLayout();
+            this.MovePanel.SuspendLayout();
             this.SweepPanel.SuspendLayout();
-            this.panel2.SuspendLayout();
+            this.UnitsPanel.SuspendLayout();
             this.TabControl.SuspendLayout();
             this.MoveTab.SuspendLayout();
             this.SweepTab.SuspendLayout();
-            this.panel4.SuspendLayout();
+            this.CurrentPositionPanel.SuspendLayout();
+            this.TerminalPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // COMPortComboBox
@@ -86,15 +90,15 @@ namespace TB6600_Application
             this.COMPortComboBox.SelectedIndexChanged += new System.EventHandler(this.COMPortComboBox_SelectedIndexChanged);
             this.COMPortComboBox.Click += new System.EventHandler(this.COMPortComboBox_Click);
             // 
-            // panel1
+            // COMPortPanel
             // 
-            this.panel1.Controls.Add(this.ConnectButton);
-            this.panel1.Controls.Add(this.COMPortLabel);
-            this.panel1.Controls.Add(this.COMPortComboBox);
-            this.panel1.Location = new System.Drawing.Point(12, 12);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(255, 36);
-            this.panel1.TabIndex = 1;
+            this.COMPortPanel.Controls.Add(this.ConnectButton);
+            this.COMPortPanel.Controls.Add(this.COMPortLabel);
+            this.COMPortPanel.Controls.Add(this.COMPortComboBox);
+            this.COMPortPanel.Location = new System.Drawing.Point(12, 12);
+            this.COMPortPanel.Name = "COMPortPanel";
+            this.COMPortPanel.Size = new System.Drawing.Size(255, 36);
+            this.COMPortPanel.TabIndex = 1;
             // 
             // ConnectButton
             // 
@@ -145,20 +149,20 @@ namespace TB6600_Application
             this.MoveUpButton.UseVisualStyleBackColor = true;
             this.MoveUpButton.Click += new System.EventHandler(this.UpButton_Click);
             // 
-            // panel3
+            // MovePanel
             // 
-            this.panel3.Controls.Add(this.MoveButton);
-            this.panel3.Controls.Add(this.MoveByTextBox);
-            this.panel3.Controls.Add(this.MoveByLabel);
-            this.panel3.Controls.Add(this.SetPositionTextBox);
-            this.panel3.Controls.Add(this.MoveDownButton);
-            this.panel3.Controls.Add(this.SetPositionButton);
-            this.panel3.Controls.Add(this.MoveUpButton);
-            this.panel3.Controls.Add(this.SetPostionLabel);
-            this.panel3.Location = new System.Drawing.Point(6, 6);
-            this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(380, 68);
-            this.panel3.TabIndex = 3;
+            this.MovePanel.Controls.Add(this.MoveButton);
+            this.MovePanel.Controls.Add(this.MoveByTextBox);
+            this.MovePanel.Controls.Add(this.MoveByLabel);
+            this.MovePanel.Controls.Add(this.SetPositionTextBox);
+            this.MovePanel.Controls.Add(this.MoveDownButton);
+            this.MovePanel.Controls.Add(this.SetPositionButton);
+            this.MovePanel.Controls.Add(this.MoveUpButton);
+            this.MovePanel.Controls.Add(this.SetPostionLabel);
+            this.MovePanel.Location = new System.Drawing.Point(6, 6);
+            this.MovePanel.Name = "MovePanel";
+            this.MovePanel.Size = new System.Drawing.Size(380, 68);
+            this.MovePanel.TabIndex = 3;
             // 
             // MoveButton
             // 
@@ -234,14 +238,16 @@ namespace TB6600_Application
             // 
             // Terminal
             // 
-            this.Terminal.Location = new System.Drawing.Point(12, 224);
+            this.Terminal.Location = new System.Drawing.Point(3, 25);
             this.Terminal.Name = "Terminal";
-            this.Terminal.Size = new System.Drawing.Size(428, 96);
+            this.Terminal.ReadOnly = true;
+            this.Terminal.Size = new System.Drawing.Size(452, 85);
             this.Terminal.TabIndex = 4;
             this.Terminal.Text = "";
             // 
             // SweepPanel
             // 
+            this.SweepPanel.Controls.Add(this.MillisSecondsLabel);
             this.SweepPanel.Controls.Add(this.ExecuteButton);
             this.SweepPanel.Controls.Add(this.DelayTextBox);
             this.SweepPanel.Controls.Add(this.DelayLabel);
@@ -255,12 +261,12 @@ namespace TB6600_Application
             this.SweepPanel.Controls.Add(this.StartLabel);
             this.SweepPanel.Location = new System.Drawing.Point(6, 6);
             this.SweepPanel.Name = "SweepPanel";
-            this.SweepPanel.Size = new System.Drawing.Size(406, 90);
+            this.SweepPanel.Size = new System.Drawing.Size(437, 90);
             this.SweepPanel.TabIndex = 5;
             // 
             // ExecuteButton
             // 
-            this.ExecuteButton.Location = new System.Drawing.Point(292, 59);
+            this.ExecuteButton.Location = new System.Drawing.Point(313, 60);
             this.ExecuteButton.Name = "ExecuteButton";
             this.ExecuteButton.Size = new System.Drawing.Size(75, 23);
             this.ExecuteButton.TabIndex = 11;
@@ -270,7 +276,7 @@ namespace TB6600_Application
             // 
             // DelayTextBox
             // 
-            this.DelayTextBox.Location = new System.Drawing.Point(282, 31);
+            this.DelayTextBox.Location = new System.Drawing.Point(303, 32);
             this.DelayTextBox.Name = "DelayTextBox";
             this.DelayTextBox.Size = new System.Drawing.Size(100, 22);
             this.DelayTextBox.TabIndex = 10;
@@ -278,7 +284,7 @@ namespace TB6600_Application
             // DelayLabel
             // 
             this.DelayLabel.AutoSize = true;
-            this.DelayLabel.Location = new System.Drawing.Point(232, 31);
+            this.DelayLabel.Location = new System.Drawing.Point(253, 32);
             this.DelayLabel.Name = "DelayLabel";
             this.DelayLabel.Size = new System.Drawing.Size(44, 17);
             this.DelayLabel.TabIndex = 9;
@@ -286,7 +292,7 @@ namespace TB6600_Application
             // 
             // StepsTextBox
             // 
-            this.StepsTextBox.Location = new System.Drawing.Point(282, 3);
+            this.StepsTextBox.Location = new System.Drawing.Point(303, 4);
             this.StepsTextBox.Name = "StepsTextBox";
             this.StepsTextBox.Size = new System.Drawing.Size(100, 22);
             this.StepsTextBox.TabIndex = 8;
@@ -294,7 +300,7 @@ namespace TB6600_Application
             // StepsLabel
             // 
             this.StepsLabel.AutoSize = true;
-            this.StepsLabel.Location = new System.Drawing.Point(232, 6);
+            this.StepsLabel.Location = new System.Drawing.Point(253, 7);
             this.StepsLabel.Name = "StepsLabel";
             this.StepsLabel.Size = new System.Drawing.Size(44, 17);
             this.StepsLabel.TabIndex = 7;
@@ -352,14 +358,14 @@ namespace TB6600_Application
             this.StartLabel.TabIndex = 1;
             this.StartLabel.Text = "Start";
             // 
-            // panel2
+            // UnitsPanel
             // 
-            this.panel2.Controls.Add(this.unitsLabel);
-            this.panel2.Controls.Add(this.UnitsComboBox);
-            this.panel2.Location = new System.Drawing.Point(273, 12);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(167, 36);
-            this.panel2.TabIndex = 11;
+            this.UnitsPanel.Controls.Add(this.unitsLabel);
+            this.UnitsPanel.Controls.Add(this.UnitsComboBox);
+            this.UnitsPanel.Location = new System.Drawing.Point(304, 12);
+            this.UnitsPanel.Name = "UnitsPanel";
+            this.UnitsPanel.Size = new System.Drawing.Size(167, 36);
+            this.UnitsPanel.TabIndex = 11;
             // 
             // TabControl
             // 
@@ -368,16 +374,16 @@ namespace TB6600_Application
             this.TabControl.Location = new System.Drawing.Point(12, 94);
             this.TabControl.Name = "TabControl";
             this.TabControl.SelectedIndex = 0;
-            this.TabControl.Size = new System.Drawing.Size(432, 128);
+            this.TabControl.Size = new System.Drawing.Size(459, 128);
             this.TabControl.TabIndex = 12;
             // 
             // MoveTab
             // 
-            this.MoveTab.Controls.Add(this.panel3);
+            this.MoveTab.Controls.Add(this.MovePanel);
             this.MoveTab.Location = new System.Drawing.Point(4, 25);
             this.MoveTab.Name = "MoveTab";
             this.MoveTab.Padding = new System.Windows.Forms.Padding(3);
-            this.MoveTab.Size = new System.Drawing.Size(424, 99);
+            this.MoveTab.Size = new System.Drawing.Size(451, 99);
             this.MoveTab.TabIndex = 1;
             this.MoveTab.Text = "Move";
             this.MoveTab.UseVisualStyleBackColor = true;
@@ -388,63 +394,93 @@ namespace TB6600_Application
             this.SweepTab.Location = new System.Drawing.Point(4, 25);
             this.SweepTab.Name = "SweepTab";
             this.SweepTab.Padding = new System.Windows.Forms.Padding(3);
-            this.SweepTab.Size = new System.Drawing.Size(424, 99);
+            this.SweepTab.Size = new System.Drawing.Size(451, 99);
             this.SweepTab.TabIndex = 2;
             this.SweepTab.Text = "Sweep";
             this.SweepTab.UseVisualStyleBackColor = true;
             // 
-            // panel4
+            // CurrentPositionPanel
             // 
-            this.panel4.Controls.Add(this.CurrentPositionTextBox);
-            this.panel4.Controls.Add(this.label1);
-            this.panel4.Controls.Add(this.CalibrateButton);
-            this.panel4.Location = new System.Drawing.Point(12, 54);
-            this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(333, 34);
-            this.panel4.TabIndex = 13;
+            this.CurrentPositionPanel.Controls.Add(this.CurrentPositionTextBox);
+            this.CurrentPositionPanel.Controls.Add(this.CurrentPositionLabel);
+            this.CurrentPositionPanel.Controls.Add(this.CalibrateButton);
+            this.CurrentPositionPanel.Location = new System.Drawing.Point(12, 54);
+            this.CurrentPositionPanel.Name = "CurrentPositionPanel";
+            this.CurrentPositionPanel.Size = new System.Drawing.Size(333, 34);
+            this.CurrentPositionPanel.TabIndex = 13;
             // 
             // CurrentPositionTextBox
             // 
             this.CurrentPositionTextBox.Location = new System.Drawing.Point(118, 6);
             this.CurrentPositionTextBox.Name = "CurrentPositionTextBox";
+            this.CurrentPositionTextBox.ReadOnly = true;
             this.CurrentPositionTextBox.Size = new System.Drawing.Size(100, 22);
             this.CurrentPositionTextBox.TabIndex = 1;
             // 
-            // label1
+            // CurrentPositionLabel
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(3, 6);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(109, 17);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Current Position";
+            this.CurrentPositionLabel.AutoSize = true;
+            this.CurrentPositionLabel.Location = new System.Drawing.Point(3, 6);
+            this.CurrentPositionLabel.Name = "CurrentPositionLabel";
+            this.CurrentPositionLabel.Size = new System.Drawing.Size(109, 17);
+            this.CurrentPositionLabel.TabIndex = 0;
+            this.CurrentPositionLabel.Text = "Current Position";
+            // 
+            // MillisSecondsLabel
+            // 
+            this.MillisSecondsLabel.AutoSize = true;
+            this.MillisSecondsLabel.Location = new System.Drawing.Point(409, 35);
+            this.MillisSecondsLabel.Name = "MillisSecondsLabel";
+            this.MillisSecondsLabel.Size = new System.Drawing.Size(26, 17);
+            this.MillisSecondsLabel.TabIndex = 12;
+            this.MillisSecondsLabel.Text = "ms";
+            // 
+            // TerminalPanel
+            // 
+            this.TerminalPanel.Controls.Add(this.TerminalLabel);
+            this.TerminalPanel.Controls.Add(this.Terminal);
+            this.TerminalPanel.Location = new System.Drawing.Point(12, 224);
+            this.TerminalPanel.Name = "TerminalPanel";
+            this.TerminalPanel.Size = new System.Drawing.Size(459, 117);
+            this.TerminalPanel.TabIndex = 14;
+            // 
+            // TerminalLabel
+            // 
+            this.TerminalLabel.AutoSize = true;
+            this.TerminalLabel.Location = new System.Drawing.Point(7, 5);
+            this.TerminalLabel.Name = "TerminalLabel";
+            this.TerminalLabel.Size = new System.Drawing.Size(63, 17);
+            this.TerminalLabel.TabIndex = 5;
+            this.TerminalLabel.Text = "Terminal";
             // 
             // LinearStagesApplication
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(450, 329);
-            this.Controls.Add(this.panel4);
-            this.Controls.Add(this.panel1);
+            this.ClientSize = new System.Drawing.Size(477, 346);
+            this.Controls.Add(this.TerminalPanel);
+            this.Controls.Add(this.CurrentPositionPanel);
+            this.Controls.Add(this.COMPortPanel);
             this.Controls.Add(this.TabControl);
-            this.Controls.Add(this.panel2);
-            this.Controls.Add(this.Terminal);
+            this.Controls.Add(this.UnitsPanel);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "LinearStagesApplication";
             this.Text = "Linear Stages Application";
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
-            this.panel3.ResumeLayout(false);
-            this.panel3.PerformLayout();
+            this.COMPortPanel.ResumeLayout(false);
+            this.COMPortPanel.PerformLayout();
+            this.MovePanel.ResumeLayout(false);
+            this.MovePanel.PerformLayout();
             this.SweepPanel.ResumeLayout(false);
             this.SweepPanel.PerformLayout();
-            this.panel2.ResumeLayout(false);
-            this.panel2.PerformLayout();
+            this.UnitsPanel.ResumeLayout(false);
+            this.UnitsPanel.PerformLayout();
             this.TabControl.ResumeLayout(false);
             this.MoveTab.ResumeLayout(false);
             this.SweepTab.ResumeLayout(false);
-            this.panel4.ResumeLayout(false);
-            this.panel4.PerformLayout();
+            this.CurrentPositionPanel.ResumeLayout(false);
+            this.CurrentPositionPanel.PerformLayout();
+            this.TerminalPanel.ResumeLayout(false);
+            this.TerminalPanel.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -452,12 +488,12 @@ namespace TB6600_Application
         #endregion
 
         private System.Windows.Forms.ComboBox COMPortComboBox;
-        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel COMPortPanel;
         private System.Windows.Forms.Button ConnectButton;
         private System.Windows.Forms.Label COMPortLabel;
         private System.Windows.Forms.Button MoveUpButton;
         private System.Windows.Forms.Button MoveDownButton;
-        private System.Windows.Forms.Panel panel3;
+        private System.Windows.Forms.Panel MovePanel;
         private System.Windows.Forms.Label SetPostionLabel;
         private System.Windows.Forms.Button SetPositionButton;
         private System.Windows.Forms.TextBox SetPositionTextBox;
@@ -467,7 +503,7 @@ namespace TB6600_Application
         private System.Windows.Forms.Label MoveByLabel;
         private System.Windows.Forms.TextBox MoveByTextBox;
         private System.Windows.Forms.Panel SweepPanel;
-        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Panel UnitsPanel;
         private System.Windows.Forms.TextBox DelayTextBox;
         private System.Windows.Forms.Label DelayLabel;
         private System.Windows.Forms.TextBox StepsTextBox;
@@ -483,10 +519,13 @@ namespace TB6600_Application
         private System.Windows.Forms.TabPage MoveTab;
         private System.Windows.Forms.TabPage SweepTab;
         private System.Windows.Forms.Button ExecuteButton;
-        private System.Windows.Forms.Panel panel4;
+        private System.Windows.Forms.Panel CurrentPositionPanel;
         private System.Windows.Forms.TextBox CurrentPositionTextBox;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label CurrentPositionLabel;
         private System.Windows.Forms.ComboBox UnitsComboBox;
+        private System.Windows.Forms.Label MillisSecondsLabel;
+        private System.Windows.Forms.Panel TerminalPanel;
+        private System.Windows.Forms.Label TerminalLabel;
     }
 }
 

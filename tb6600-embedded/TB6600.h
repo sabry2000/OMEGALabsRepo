@@ -6,6 +6,7 @@ class TB6600 {
     static constexpr double INCHES_PER_REVOLUTION = 0.1875;
     static const int PULSES_PER_REVOLUTION = 6400;
     static const int MAXIMUM_HEIGHT = 12;
+    const int DEFAULT_NUMBER_OF_PULSES = 6400;
     int m_numberOfPulses = 6400;
 
   private:
@@ -27,6 +28,7 @@ class TB6600 {
     void GoUp();
     void GoDown();
     void Calibrate();
+    void SetDefaultPulses();
     int SetNumberOfPulses(const int& numberOfPulses);
     double GetCurrentLocation();
 };

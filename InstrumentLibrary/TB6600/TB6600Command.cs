@@ -15,6 +15,7 @@ namespace InstrumentLibrary.TB6600
 
         public static TB6600Command UP { get { return new TB6600Command("u"); } }
         public static TB6600Command DOWN { get { return new TB6600Command("d"); } }
+        public static TB6600Command LOCATION { get { return new TB6600Command("l"); } }
         public static TB6600Command CALIBRATE { get { return new TB6600Command("c"); } }
         private static TB6600Command PULSES { get { return new TB6600Command("p"); } }
 

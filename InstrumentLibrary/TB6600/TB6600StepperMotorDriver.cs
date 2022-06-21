@@ -11,18 +11,31 @@ namespace InstrumentLibrary.TB6600
         private const int DOUBLE_PULSES_PER_REVOLUTION = 6400;
         private const int INT_BAUD_RATE = 9600;
 
+        private const String STR_LOCATION_STRING = "Current Location: ";
+
         private readonly string m_COMPort;
         private SerialPort m_serialPort;
         private IList<TB6600Command> m_commandBuffer = new List<TB6600Command>();
 
-        public double Position { get; private set; }
+        public double PositionInches { get; private set; }
         public string LastMessage { get; private set; }
 
         public TB6600StepperMotorDriver(String COMPort)
         {
             m_COMPort = COMPort;
             m_serialPort = new SerialPort(COMPort, INT_BAUD_RATE);
+        }
+
+        public bool isConnected() { return m_serialPort.IsOpen; }
+
+        public void Connect()
+        {
             m_serialPort.Open();
+        }
+
+        public void Disconnect()
+        {
+            m_serialPort.Close();
         }
 
         public void QueueCommand(TB6600Command cmd)
@@ -32,79 +45,102 @@ namespace InstrumentLibrary.TB6600
 
         public void ExecuteCommands()
         {
+            QueueCommand(TB6600Command.LOCATION);
+
             foreach (var cmd in m_commandBuffer)
             {
                 m_serialPort.WriteLine(cmd.toString());
                 LastMessage = m_serialPort.ReadLine();
             }
             m_commandBuffer.Clear();
+
+            UpdateLocation();
+        }
+
+        private void UpdateLocation()
+        {
+            PositionInches = Double.Parse(LastMessage.Split(' ')[2]);
         }
 
         public void Calibrate()
         {
             QueueCommand(TB6600Command.CALIBRATE);
             ExecuteCommands();
-            Position = 0;
+            //PositionInches = 0;
         }
 
         public void SetPosition(double positionInches)
         {
 
-            double distanceInches = positionInches - Position;
-            if (distanceInches < 0)
+            double distanceInches = Math.Abs(positionInches - PositionInches);
+            if (positionInches > 0)
                 MoveUp(distanceInches);
             else
                 MoveDown(distanceInches);
+
+            //PositionInches = positionInches;
         }
 
         public void Move(double distanceInches)
         {
-            var numberOfRevolutions = Math.Abs(distanceInches / DOUBLE_INCHES_PER_REVOLUTION);
-            int numberOfPulses = (int)(DOUBLE_PULSES_PER_REVOLUTION * numberOfRevolutions);
-
-            TB6600Command cmd = distanceInches > 0 ? TB6600Command.UP : TB6600Command.DOWN;
-
-            QueueCommand(TB6600Command.PulsesCommand(numberOfPulses));
-            QueueCommand(cmd);
-            ExecuteCommands();
+            if (distanceInches > 0)
+                MoveUp(distanceInches);
+            else
+                MoveDown(Math.Abs(distanceInches));
         }
 
         public void MoveUp()
         {
+            QueueCommand(TB6600Command.PulsesCommand(DOUBLE_PULSES_PER_REVOLUTION));
             QueueCommand(TB6600Command.UP);
             ExecuteCommands();
+
+            //PositionInches += DOUBLE_INCHES_PER_REVOLUTION;
         }
 
-        public void MoveUp(double distanceInches)
+        private void MoveUp(double distanceInches)
         {
-            var numberOfRevolutions = distanceInches / DOUBLE_INCHES_PER_REVOLUTION;
-            int numberOfPulses = (int)(DOUBLE_PULSES_PER_REVOLUTION * numberOfRevolutions);
+            if (distanceInches > 0)
+            {
+                var numberOfRevolutions = distanceInches / DOUBLE_INCHES_PER_REVOLUTION;
+                int numberOfPulses = (int)(DOUBLE_PULSES_PER_REVOLUTION * numberOfRevolutions);
 
-            QueueCommand(TB6600Command.PulsesCommand(numberOfPulses));
-            QueueCommand(TB6600Command.UP);
-            ExecuteCommands();
+                QueueCommand(TB6600Command.PulsesCommand(numberOfPulses));
+                QueueCommand(TB6600Command.UP);
+                ExecuteCommands();
+                
+               // PositionInches += distanceInches;
+            }
         }
 
         public void MoveDown()
         {
+            QueueCommand(TB6600Command.PulsesCommand(DOUBLE_PULSES_PER_REVOLUTION));
             QueueCommand(TB6600Command.DOWN);
             ExecuteCommands();
+
+            //PositionInches -= DOUBLE_INCHES_PER_REVOLUTION;
         }
 
-        public void MoveDown(double distanceInches)
+        private void MoveDown(double distanceInches)
         {
-            var numberOfRevolutions = distanceInches / DOUBLE_INCHES_PER_REVOLUTION;
-            int numberOfPulses = (int)(DOUBLE_PULSES_PER_REVOLUTION * numberOfRevolutions);
+            if (distanceInches > 0)
+            {
+                var numberOfRevolutions = distanceInches / DOUBLE_INCHES_PER_REVOLUTION;
+                int numberOfPulses = (int)(DOUBLE_PULSES_PER_REVOLUTION * numberOfRevolutions);
 
-            QueueCommand(TB6600Command.PulsesCommand(numberOfPulses));
-            QueueCommand(TB6600Command.DOWN);
-            ExecuteCommands();
+                QueueCommand(TB6600Command.PulsesCommand(numberOfPulses));
+                QueueCommand(TB6600Command.DOWN);
+                ExecuteCommands();
+
+                // PositionInches -= distanceInches;
+            }
         }
 
 
         ~TB6600StepperMotorDriver()
         {
-            m_serialPort.Close();
+            Disconnect();
         }
     }
 }
