@@ -48,6 +48,7 @@ namespace TB6600_Application
             this.UnitsComboBox = new System.Windows.Forms.ComboBox();
             this.Terminal = new System.Windows.Forms.RichTextBox();
             this.SweepPanel = new System.Windows.Forms.Panel();
+            this.MillisSecondsLabel = new System.Windows.Forms.Label();
             this.ExecuteButton = new System.Windows.Forms.Button();
             this.DelayTextBox = new System.Windows.Forms.TextBox();
             this.DelayLabel = new System.Windows.Forms.Label();
@@ -66,7 +67,6 @@ namespace TB6600_Application
             this.CurrentPositionPanel = new System.Windows.Forms.Panel();
             this.CurrentPositionTextBox = new System.Windows.Forms.TextBox();
             this.CurrentPositionLabel = new System.Windows.Forms.Label();
-            this.MillisSecondsLabel = new System.Windows.Forms.Label();
             this.TerminalPanel = new System.Windows.Forms.Panel();
             this.TerminalLabel = new System.Windows.Forms.Label();
             this.COMPortPanel.SuspendLayout();
@@ -97,14 +97,14 @@ namespace TB6600_Application
             this.COMPortPanel.Controls.Add(this.COMPortComboBox);
             this.COMPortPanel.Location = new System.Drawing.Point(12, 12);
             this.COMPortPanel.Name = "COMPortPanel";
-            this.COMPortPanel.Size = new System.Drawing.Size(255, 36);
+            this.COMPortPanel.Size = new System.Drawing.Size(286, 36);
             this.COMPortPanel.TabIndex = 1;
             // 
             // ConnectButton
             // 
             this.ConnectButton.Location = new System.Drawing.Point(173, 5);
             this.ConnectButton.Name = "ConnectButton";
-            this.ConnectButton.Size = new System.Drawing.Size(75, 28);
+            this.ConnectButton.Size = new System.Drawing.Size(110, 28);
             this.ConnectButton.TabIndex = 1;
             this.ConnectButton.Text = "Connect";
             this.ConnectButton.UseVisualStyleBackColor = true;
@@ -263,6 +263,15 @@ namespace TB6600_Application
             this.SweepPanel.Name = "SweepPanel";
             this.SweepPanel.Size = new System.Drawing.Size(437, 90);
             this.SweepPanel.TabIndex = 5;
+            // 
+            // MillisSecondsLabel
+            // 
+            this.MillisSecondsLabel.AutoSize = true;
+            this.MillisSecondsLabel.Location = new System.Drawing.Point(409, 35);
+            this.MillisSecondsLabel.Name = "MillisSecondsLabel";
+            this.MillisSecondsLabel.Size = new System.Drawing.Size(26, 17);
+            this.MillisSecondsLabel.TabIndex = 12;
+            this.MillisSecondsLabel.Text = "ms";
             // 
             // ExecuteButton
             // 
@@ -425,15 +434,6 @@ namespace TB6600_Application
             this.CurrentPositionLabel.Size = new System.Drawing.Size(109, 17);
             this.CurrentPositionLabel.TabIndex = 0;
             this.CurrentPositionLabel.Text = "Current Position";
-            // 
-            // MillisSecondsLabel
-            // 
-            this.MillisSecondsLabel.AutoSize = true;
-            this.MillisSecondsLabel.Location = new System.Drawing.Point(409, 35);
-            this.MillisSecondsLabel.Name = "MillisSecondsLabel";
-            this.MillisSecondsLabel.Size = new System.Drawing.Size(26, 17);
-            this.MillisSecondsLabel.TabIndex = 12;
-            this.MillisSecondsLabel.Text = "ms";
             // 
             // TerminalPanel
             // 
